@@ -33,7 +33,7 @@ SELECT *
 FROM
 (SELECT dannys_diner.sales.customer_id,
 dannys_diner.menu.product_name,
-ROW_NUMBER() OVER(PARTITION BY dannys_diner.sales.customer_id 			ORDER BY dannys_diner.sales.order_date) as number
+ROW_NUMBER() OVER(PARTITION BY dannys_diner.sales.customer_id ORDER BY dannys_diner.sales.order_date) as number
 FROM dannys_diner.sales
 LEFT JOIN 
 dannys_diner.menu
