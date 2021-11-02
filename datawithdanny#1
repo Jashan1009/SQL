@@ -120,10 +120,49 @@ WHERE tbl.no = 1;
 
 -- 8. What is the total items and amount spent for each member before they became a member?
 
-
+/* --------------------
+SELECT
+       dannys_diner.sales.customer_id,
+       SUM(dannys_diner.menu.price) as Total_Spent,
+       COUNT(dannys_diner.sales.product_id) as Total_Items    
+FROM dannys_diner.sales
+LEFT JOIN
+dannys_diner.members
+ON
+dannys_diner.sales.customer_id = dannys_diner.members.customer_id
+LEFT JOIN
+dannys_diner.menu
+ON
+dannys_diner.sales.product_id = dannys_diner.menu.product_id
+WHERE 
+dannys_diner.sales.order_date < dannys_diner.members.join_date
+GROUP BY dannys_diner.sales.customer_id
+ORDER BY dannys_diner.sales.customer_id;
+--------------------*/
 
 
 -- 9.  If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
+
+/* --------------------
+SELECT 	tbl.customer_id,
+SUM(tbl.points)
+FROM
+(
+  SELECT 
+	dannys_diner.sales.customer_id,
+  	dannys_diner.sales.product_id,
+  	dannys_diner.menu.product_name,
+  	dannys_diner.menu.price,
+ CASE WHEN dannys_diner.sales.product_id = 1 THEN (PRICE * 20) ELSE (PRICE * 10) END AS points
+FROM
+dannys_diner.sales
+LEFT JOIN
+dannys_diner.menu
+ON dannys_diner.sales.product_id = dannys_diner.menu.product_id
+) tbl
+GROUP BY tbl.customer_id
+ORDER BY tbl.customer_id;
+--------------------*/
 
 
 -- 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
